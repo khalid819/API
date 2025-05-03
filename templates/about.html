@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- <link rel="stylesheet" href="style.css"> -->
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Jarvis-virtual assistant</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="icon" href="{{ url_for('static', filename='fave.png') }}" type="image/png">
+</head>
+
+<body>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- <nav class="navbar navbar-expand-lg bg-body-tertiary"> -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-success">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">Jarvis</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/doc">Docs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/local">How To Use Locally</a>
+                    </li>
+
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+    <h2>JARVIS-Your Digital Companion</h2>
+    <p>Jarvis is an advanced AI-powered virtual assistant designed to simplify your daily tasks and provide intelligent
+        assistance through natural language commands. Built with cutting-edge Python technologies, Jarvis combines
+        multiple functionalities into one seamless experience.</p>
+    <h4>Key Features:</h4>
+    <ul>
+        <li><strong>Voice Interaction</strong> - Natural text-to-speech responses with customizable voice settings</li>
+        <li><strong>Web Automation</strong> - Open websites and search content with voice commands</li>
+        <li><strong>Information Mastery</strong> - Get Wikipedia summaries, news headlines, and weather reports</li>
+        <li> <strong>Productivity Tools</strong> - Check time, dates (including Hijri calendar)</li>
+        <li><strong>Entertainmen</strong>t - Enjoy AI-generated jokes and creative image generation</li>
+        <li><strong>AI Integration</strong> - Powered by DeepSeek AI for intelligent question answering</li>
+    </ul>
+    <h4>Technical Highlights:</h4>
+    <ul>
+        <li>Built with Python using PyTTSx3 for voice synthesis</li>
+        <li>Integrates with OpenRouter AI, Wikipedia API, and NewsAPI</li>
+        <li>Weather data from OpenWeatherMap</li>
+        <li>Web automation through Selenium</li>
+        <li>Hijri-Gregorian date conversion capabilities</li>
+    </ul>
+    <p>This assistant was created by khalid as a comprehensive solution blending artificial intelligence with practical
+        daily utilities. Jarvis represents the next generation of personal assistants - adaptable, intelligent, and
+        always ready to help.</p>
+    <footer>
+        &copy; 2025 Jarvis Voice Assistant
+    </footer>
+</body>
+
+</html>

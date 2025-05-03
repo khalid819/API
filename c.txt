@@ -1,0 +1,4 @@
+khalidjarvispy.pythonanywhere.com.
+/home/khalidjarvispy/mysite/flask_app.py
+
+https://www.pythonanywhere.com/user/khalidjarvispy/files/home/khalidjarvispy/mysite/static

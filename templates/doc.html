@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- <link rel="stylesheet" href="style.css"> -->
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Jarvis-virtual assistant</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="icon" href="{{ url_for('static', filename='fave.png') }}" type="image/png">
+</head>
+
+<body>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- <nav class="navbar navbar-expand-lg bg-body-tertiary"> -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-success">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">Jarvis</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Docs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/local">How To Use Locally</a>
+                    </li>
+
+
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+    <h2>Jarvis Virtual Assistant Documentation</h2>
+    <h3>1.Overview</h3>
+    <p>Jarvis is a Python-based virtual assistant designed to perform various tasks like web browsing, sending emails,
+        fetching news, telling jokes, checking the weather, and more. It uses multiple APIs and libraries to provide a
+        seamless user experience.</p>
+    <p>This documentation explains the features, setup, and usage of the Jarvis assistant.</p>
+    <h3>2.Features</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Feature</th>
+                <th>Command Example</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Web Browsing</strong></td>
+                <td><code>open google</code></td>
+                <td>Opens a specified website in the default browser</td>
+            </tr>
+            <tr>
+                <td><strong>YouTube Search</strong></td>
+                <td><code>search cats on youtube</code></td>
+                <td>Searches YouTube for a given query</td>
+            </tr>
+            <tr>
+                <td><strong>News Headlines</strong></td>
+                <td><code>news</code></td>
+                <td>Fetches and reads the latest news headlines</td>
+            </tr>
+            <tr>
+                <td><strong>Wikipedia Search</strong></td>
+                <td><code>wiki AI</code></td>
+                <td>Provides a summary from Wikipedia</td>
+            </tr>
+            <tr>
+                <td><strong>Time Check</strong></td>
+                <td><code>time</code></td>
+                <td>Speaks the current time</td>
+            </tr>
+            <tr>
+                <td><strong>Email Sending</strong></td>
+                <td><code>send email</code></td>
+                <td>Composes and sends an email via Gmail</td>
+            </tr>
+            <tr>
+                <td><strong>Weather Info</strong></td>
+                <td><code>weather</code></td>
+                <td>Provides weather details for a city</td>
+            </tr>
+            <tr>
+                <td><strong>Hijri Date</strong></td>
+                <td><code>hijri date</code></td>
+                <td>Displays the current Islamic (Hijri) date</td>
+            </tr>
+            <tr>
+                <td><strong>Image Generation</strong></td>
+                <td><code>image of a cat</code></td>
+                <td>Generates an AI image using Craiyon</td>
+            </tr>
+            <tr>
+                <td><strong>Tell a Joke</strong></td>
+                <td><code>joke</code></td>
+                <td>Tells a random programming joke</td>
+            </tr>
+            <tr>
+                <td><strong>AI Chat</strong></td>
+                <td><code>What is quantum computing?</code></td>
+                <td>Uses OpenAI to answer questions</td>
+            </tr>
+        </tbody>
+    </table>
+    <hr>
+    <h3>3.How it works</h3>
+    <h5>
+        <strong>core functions</strong>
+    </h5>
+    <ol start="1">
+        <li>
+            <p><strong><code>speak(text)</code></strong></p>
+            <ul>
+                <li>
+                    <p>Uses <code>pyttsx3</code> for text-to-speech.</p>
+                </li>
+                <li>
+                    <p>Configures voice, speed, and volume.</p>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <p><strong><code>wish()</code></strong></p>
+            <ul>
+                <li>
+                    <p>Greets the user based on the time of day.</p>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <p><strong><code>web()</code></strong></p>
+            <ul>
+                <li>
+                    <p>Opens a website (e.g., <code>open facebook</code> → <code>https://www.facebook.com</code>).</p>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <p><strong><code>search()</code></strong></p>
+            <ul>
+                <li>
+                    <p>Searches YouTube (e.g., <code>search Python tutorials</code>).</p>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <p><strong><code>news()</code></strong></p>
+            <ul>
+                <li>
+                    <p>Fetches headlines from NewsAPI.</p>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <p><strong><code>wiki()</code></strong></p>
+            <ul>
+                <li>
+                    <p>Gets Wikipedia summaries (with error handling).</p>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <p><strong><code>time()</code></strong></p>
+            <ul>
+                <li>
+                    <p>Speaks the current time.</p>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <p><strong><code>email()</code></strong></p>
+            <ul>
+                <li>
+                    <p>Uses OpenAI to draft emails and sends them via SMTP.</p>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <p><strong><code>weather()</code></strong></p>
+            <ul>
+                <li>
+                    <p>Provides weather data using OpenWeatherMap.</p>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <p><strong><code>hijri()</code></strong></p>
+            <ul>
+                <li>
+                    <p>Converts Gregorian date to Hijri.</p>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <p><strong><code>img()</code></strong></p>
+            <ul>
+                <li>
+                    <p>Uses Selenium to generate AI images via Craiyon.</p>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <p><strong><code>joke()</code></strong></p>
+            <ul>
+                <li>
+                    <p>Tells random programming jokes using <code>pyjokes</code>.</p>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <p><strong><code>ai()</code></strong></p>
+            <ul>
+                <li>
+                    <p>Uses OpenAI (via OpenRouter) for general queries.</p>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <p><strong><code>location()</code></strong></p>
+            <ul>
+                <li>
+                    <p>Uses ip address for location.</p>
+                </li>
+            </ul>
+        </li>
+    </ol>
+    <hr>
+    <h3>6.Error Handling</h3>
+    <ul>
+        <li><strong>Wikipedia Errors</strong> → Falls back to Google search.</li>
+        <li><strong>API Failures</strong>→ Provides error messages.</li>
+        <li><strong>General Exceptions</strong>→ Provides error messages.</li>
+    </ul>
+    <footer>
+        &copy; 2025 Jarvis Voice Assistant
+    </footer>
+</body>
+
+</html>

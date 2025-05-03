@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Jarvis-virtual assistant</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="icon" href="{{ url_for('static', filename='fave.png') }}" type="image/png">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/monokai-sublime.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+</head>
+
+<body>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-success">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">Jarvis</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/doc">Docs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">How To Use Locally</a>
+                    </li>
+
+
+
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+    <h2>How To Use Locally</h2>
+    <h3>Steps:</h3>
+    <ol>
+        <li>install <a href="https://www.python.org/downloads/">Python</a> first</li>
+        <li>install <a href="https://code.visualstudio.com/download">vs code</a></li>
+        <li>Make a file (jarvis.py)</li>
+        <li>get <a href="https://newsapi.org/">news api key</a> from here</li>
+        <li>get <a href="https://openrouter.ai/">openrouter api key</a> from here</li>
+        <li>get <a href="https://openweathermap.org/">open weather api key</a> from here</li>
+        <li>replace all api keys</li>
+        <li>Install this modules</li>
+        <pre>
+            <code class="language-python">
+                pip install pyttsx3 requests wikipedia hijri-converter selenium pyjokes openai python-dotenv
+            </code>
+        </pre>
+        <li>Run this code</li>
+        <pre>
+            <code class="language-python">
+                import pyjokes
+                import webbrowser
+                import pyttsx3
+                import requests
+                import datetime
+                import wikipedia
+                import smtplib
+                from email.mime.text import MIMEText
+                from email.mime.multipart import MIMEMultipart
+                from openai import OpenAI
+                import hijri_converter
+                from selenium.webdriver.common.keys import Keys
+                from selenium.webdriver.common.by import By
+                from time import *
+                from selenium import webdriver
+                engine = pyttsx3.init()
+                newsapi="your news api key"
+                try:
+                    def speak(text):     
+                       engine = pyttsx3.init()
+                       voices = engine.getProperty('voices')  
+                       engine.setProperty('voice', voices[1].id)  
+                       engine.setProperty('rate', 120)  
+                       engine.setProperty('volume', 0.9)  
+                       engine.say(text)
+                       engine.runAndWait()
+                    def wish():     
+                        hour=int(datetime.datetime.now().hour)
+                        if hour<=0 and hour>12:
+                            speak("good morning !")
+                        elif hour>=12 and hour<18:
+                            speak("good afternoon!")
+                        else:
+                            speak("good evening!")
+                    def web():     
+                        d=c.lower().split(" ")[1]
+                        speak(f"opening {d}")
+                        webbrowser.open(f"https://www.{d}.com")
+                    def search():     
+                        s=c.lower().replace("youtube","")
+                        speak(f"search results for {s}")
+                        webbrowser.open(f"https://www.youtube.com/results?search_query={s}")
+                    def news ():     
+                        r=requests.get(f"https://newsapi.org/v2/top-headlines?country=us&apiKey={newsapi}")
+                        if r.status_code == 200:
+                            data = r.json()
+                            articles = data['articles']
+                            for article in articles:
+                                print(article['title'])     
+                                speak(article['title'])
+                    def wiki ():
+                             j=c.lower().replace("wiki","")
+                             try:
+                                 summary = wikipedia.summary(j, sentences=3)
+                                 print(summary)
+                                 speak(summary)  
+                             except wikipedia.exceptions.DisambiguationError as e:
+                                print(f"Disambiguation error: {e.options}")
+                                webbrowser.open(f'https://www.google.com/search?q={j}')
+                             except wikipedia.exceptions.HTTPTimeoutError:
+                                print("Request timed out. Please try again.")
+                                webbrowser.open(f'https://www.google.com/search?q={j}')
+                             except wikipedia.exceptions.RedirectError:
+                                print("Redirect error occurred.")
+                                webbrowser.open(f'https://www.google.com/search?q={j}')
+                             except wikipedia.exceptions.PageError:
+                                print(f"Page not found for {j}.")
+                                webbrowser.open(f'https://www.google.com/search?q={j}')
+                             except Exception as e:
+                                print(f"An error occurred: {e}")
+                                webbrowser.open(f'https://www.google.com/search?q={j}')
+                    def time():
+                        strf=datetime.datetime.now().strftime("%H:%M:%S")
+                        speak(f"the time is {strf}")
+                        print(strf)
+                    def email():
+                     a=input("to: ")
+                     b=input("subject: ")
+                     q=input("recipient's name: ")
+                     r=input("relation: ")
+                     client = OpenAI(
+                          base_url="https://openrouter.ai/api/v1",
+                          api_key="your OpenRouter api Key",
+                        )
+                     completion = client.chat.completions.create(
+                          extra_headers={
+                            "HTTP-Referer": "<YOUR_SITE_URL>", 
+                            "X-Title": "<YOUR_SITE_NAME>", 
+                          },
+                          extra_body={},
+                          model="deepseek/deepseek-chat:free",
+                          messages=[
+                            {
+                              "role": "user",
+                              "content": f"write an e mail about{b} use my name khalid and recipient's name is {q},relationship is {r}"
+                            }
+                          ]
+                        )
+                     o=(completion.choices[0].message.content)
+                     print(o)
+                     sender_email = "your email address"
+                     receiver_email = a
+                     password = "your email app password"  # Use App Password if 2FA is enabled
+                
+                # Email content
+                     subject = b
+                     body = o
+                
+                # Create a multipart message
+                     message = MIMEMultipart()
+                     message['From'] = sender_email
+                     message['To'] = receiver_email
+                     message['Subject'] = subject
+                
+                # Attach the body of the email
+                     message.attach(MIMEText(body, 'plain'))
+                
+                # SMTP server and port for Gmail
+                     smtp_server = "smtp.gmail.com"
+                     smtp_port = 587
+                
+                     try:
+                    # Connect to the Gmail SMTP server
+                         server = smtplib.SMTP(smtp_server, smtp_port)
+                         server.starttls()  # Start TLS encryption
+                         server.login(sender_email, password)  # Login to your email account
+                
+                    # Send the email
+                         server.sendmail(sender_email, receiver_email, message.as_string())
+                
+                         print("Email sent successfully!")
+                    
+                     except Exception as e:
+                         print(f"Error: {e}")
+                    
+                     finally:
+                         server.quit()  # Close the connection to the server
+                    def wether():
+                        def get_weather(city, api_key):
+                                        base_url = "http://api.openweathermap.org/data/2.5/weather"
+                                        params = {
+                                            "q": city,
+                                            "appid": api_key,
+                                            "units": "metric"  
+                                        }
+                                        try:
+                                            response = requests.get(base_url, params=params)
+                                            response.raise_for_status()
+                                            data = response.json()
+                                            weather = data["weather"][0]["description"]
+                                            temp = data["main"]["temp"]
+                                            feels_like = data["main"]["feels_like"]
+                                            humidity = data["main"]["humidity"]
+                                            wind_speed = data["wind"]["speed"]
+                                            print(f"Weather in {city}: {weather.capitalize()}")
+                                            print(f"Temperature: {temp}°C (Feels like: {feels_like}°C)")
+                                            print(f"Humidity: {humidity}%")
+                                            print(f"Wind Speed: {wind_speed} m/s")
+                                            speak(f"Weather in {city}: {weather.capitalize()}")
+                                            speak(f"Temperature: {temp}°C (Feels like: {feels_like}°C)")
+                                            speak(f"Humidity: {humidity}%")
+                                            speak(f"Wind Speed: {wind_speed} m/s")
+                                        except requests.exceptions.HTTPError as http_err:
+                                            print(f"HTTP error occurred: {http_err}")
+                                        except Exception as err:
+                                            print(f"An error occurred: {err}")
+                        api_key = "your Open wether api Key"
+                        city = input("Enter the city name: ")
+                        get_weather(city,api_key)
+                    def ai():
+                        client = OpenAI(
+                          base_url="https://openrouter.ai/api/v1",
+                          api_key="your OpenRouter api Key",
+                        )
+                        completion = client.chat.completions.create(
+                          extra_headers={
+                            "HTTP-Referer": "<YOUR_SITE_URL>", 
+                            "X-Title": "<YOUR_SITE_NAME>", 
+                          },
+                          extra_body={},
+                          model="deepseek/deepseek-chat:free",
+                          messages=[
+                            {
+                              "role": "user",
+                              "content": c
+                            }
+                          ]
+                        )
+                        print(completion.choices[0].message.content)
+                        speak(completion.choices[0].message.content)
+                    def google():
+                        k=c.lower().replace("search","")
+                        webbrowser.open(f'https://www.google.com/search?q={k}')
+                        speak('searching')
+                    def check_eid():
+                        today = datetime.date.today()
+                        hijri_date = hijri_converter.Gregorian(today.year, today.month, today.day).to_hijri()
+                        if hijri_date.month == 10 and hijri_date.day == 1:
+                            speak("iid Mubarak! May this iid bring happiness to you and your family.")
+                            print("Eid Mubarak! 🎉")
+                    speak("initializing jarvis.......")
+                    wish()
+                    check_eid()
+                    def hijri():
+                        today = datetime.date.today()
+                        hijri_date = hijri_converter.Gregorian(today.year, today.month, today.day).to_hijri()
+                        print(hijri_date)
+                        speak(f"the hizri date is{hijri_date}")
+                    def img():
+                        l=input("file name ? ")
+                        driver = webdriver.Edge()
+                        driver.get("http://www.craiyon.com")
+                        sleep(15)
+                        elem = driver.find_element(By.TAG_NAME, "textarea")
+                        elem.clear()
+                        elem.send_keys(c)
+                        elem.send_keys(Keys.RETURN)
+                        sleep(20)
+                        img = driver.find_element(By.CLASS_NAME, 'object-cover')
+                        image_url = img.get_attribute("src")
+                        img_data = requests.get(image_url).content
+                        with open(f"{l}.jpeg", 'wb') as f:
+                            f.write(img_data)
+                            print(f"image saved at {l}.jpeg")
+                        driver.close()
+                    def joke():
+                        p=(pyjokes.get_joke())
+                        print(p)
+                        speak(p)
+                    while True:
+                        try:
+                            def processcommand(c):
+                               if "open" in c:
+                                 web()
+                               elif "youtube" in c:
+                                 search()
+                               elif "news" in c:
+                                  news()
+                               elif "time" in c:
+                                   time()
+                               elif "send email" in c:
+                                   email()
+                               elif"wether"in c:                
+                                   wether()
+                               elif "wiki" in c:
+                                   wiki()
+                               elif"search"in c :
+                                   google()
+                               elif"hijri date"in c:
+                                    hijri()
+                               elif"image"in c:
+                                   img()
+                               elif"joke"in c:
+                                   joke()
+                               else:
+                                   ai()
+                            c=input(": ")
+                            processcommand(c)
+                        except Exception as e:
+                            print("something went wrong please try again in a few seconds")
+                            speak("something went wrong please try again in a few seconds")
+                except Exception as e:
+                    print("something went wrong please try again in a few seconds")
+                    speak("something went wrong please try again in a few seconds")
+            </code>
+        </pre>
+
+    </ol>
+    <footer>
+        &copy; 2025 Jarvis Voice Assistant
+    </footer>
+</body>
+
+</html>
