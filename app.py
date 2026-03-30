@@ -216,18 +216,7 @@ def initialize():
     })
 
 
-@app.route("/")
-def home():
-    return render_template("index.html")
-@app.route("/about")
-def about():
-    return render_template("about.html")
-@app.route("/doc")
-def docs():
-    return render_template("doc.html")
-@app.route("/local")
-def local():
-    return render_template("local.html")def wish():
+def wish():
     hour = datetime.datetime.now().hour
     if 0 <= hour < 12:
         return "Good morning!"
