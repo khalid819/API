@@ -418,4 +418,4 @@ def docs():
 @app.route("/local")
 def local():
     return render_template("local.html")
-app.run(debug=True)
+app.run(host="0.0.0.0",debug=True)
