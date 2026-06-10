@@ -2,18 +2,209 @@
 <html lang="en">
 
 <head>
-
-
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8505350265295900"
+        crossorigin="anonymous"></script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Jarvis-virtual assistant</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="icon" href="{{ url_for('static', filename='fave.png') }}" type="image/png">
+
+    <!-- Custom CSS -->
+    <style>
+        /* Conversation Bubbles */
+        .chat-container {
+            max-width: 700px;
+            margin: 120px auto 150px auto;
+            padding: 20px;
+            max-height: 60vh;
+            overflow-y: auto;
+            scroll-behavior: smooth;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            display: flex;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* User Message (Right side) */
+        .user-message {
+            justify-content: flex-end;
+        }
+
+        .user-bubble {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 18px;
+            border-radius: 20px 20px 5px 20px;
+            max-width: 70%;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            word-wrap: break-word;
+        }
+
+        /* Jarvis Message (Left side) */
+        .jarvis-message {
+            justify-content: flex-start;
+        }
+
+        .jarvis-bubble {
+            background: linear-gradient(135deg, #4285f4 0%, #0d47a1 100%);
+            color: white;
+            padding: 12px 18px;
+            border-radius: 20px 20px 20px 5px;
+            max-width: 70%;
+            box-shadow: 0 4px 15px rgba(66, 133, 244, 0.3);
+            word-wrap: break-word;
+        }
+
+        /* Typing indicator */
+        .typing-bubble {
+            background: #333;
+            color: #aaa;
+            padding: 12px 18px;
+            border-radius: 20px 20px 20px 5px;
+            max-width: 120px;
+            font-style: italic;
+        }
+
+        .typing-bubble::after {
+            content: "|";
+            animation: cursor 1s infinite;
+            color: #4285f4;
+        }
+
+        @keyframes cursor {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0;
+            }
+        }
+
+        /* Fixed input stays at bottom */
+        .input-container {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 600px;
+            z-index: 1000;
+            background: rgba(30, 30, 30, 0.95);
+            /* backdrop-filter: blur(15px); */
+            border-radius: 50px;
+            padding: 10px 20px;
+            border: 1px solid #4285f4;
+            box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+        }
+
+        #command-input {
+            flex-grow: 1;
+            padding: 12px 20px;
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 16px;
+            outline: none;
+        }
+
+        #send-button {
+            background: linear-gradient(135deg, #4285f4, #0d47a1);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            margin-left: 10px;
+        }
+
+        #send-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(66, 133, 244, 0.6);
+        }
+
+        /* Remove old response area */
+        .response-area {
+            display: none;
+        }
+
+        /* Adjust body for fixed elements */
+        body {
+            padding-bottom: 100px;
+            background-color: #121212;
+            color: white;
+        }
+
+        /* Header styling */
+        header {
+            text-align: center;
+            padding: 20px;
+            background-color: #1a1a1a;
+        }
+
+        /* Assistant face */
+        .assistant-face {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .eye {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            background-color: #4285f4;
+            border-radius: 50%;
+            margin: 0 10px;
+            animation: blink 3s infinite;
+        }
+
+        @keyframes blink {
+
+            0%,
+            45%,
+            55%,
+            100% {
+                height: 20px;
+            }
+
+            50% {
+                height: 5px;
+            }
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #1a1a1a;
+            margin-top: 30px;
+        }
+    </style>
 </head>
 
 <body>
-
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <nav class="navbar navbar-expand-lg navbar-dark bg-success">
         <div class="container-fluid">
@@ -35,235 +226,225 @@
                         <a class="nav-link" href="/doc">Docs</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/local">How To Use Locally</a>
+                        <a class="nav-link" href="/local">Images</a>
                     </li>
-
-
                 </ul>
-
             </div>
         </div>
     </nav>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
-    </head>
 
-    <body>
-        <header>
-            <h1>JARVIS VOICE ASSISTANT</h1>
-        </header>
+    <header>
+        <h1>JARVIS VIRTUAL ASSISTANT</h1>
+    </header>
 
-        <div class="container">
-            <div class="assistant-face">
-                <div class="eye"></div>
-                <div class="eye"></div>
+    <div class="container">
+        <div class="assistant-face">
+            <div class="eye"></div>
+            <div class="eye"></div>
+        </div>
+
+        <!-- Conversation Container -->
+        <div class="chat-container" id="chat-container">
+            <!-- Messages will appear here -->
+        </div>
+
+        <!-- Fixed Input Container -->
+        <div class="input-container">
+            <input type="text" id="command-input" placeholder="Give me a command..." autocomplete="off">
+            <button id="send-button">Send</button>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2025 Jarvis Virtual Assistant
+    </footer>
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+
+
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true,
+                tags: 'ams'
+            },
+            options: {
+                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+            }
+        };
+
+        window.addEventListener('load', async () => {
+            await fetch('/api/clear_memory', {
+                method: 'POST'
+            });
+        });
+        document.addEventListener('DOMContentLoaded', function () {
+            const commandInput = document.getElementById('command-input');
+            const sendButton = document.getElementById('send-button');
+            const chatContainer = document.getElementById('chat-container');
+
+            // Function to add message to chat
+            function addMessage(sender, text){
+
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}-message`;
+
+            const bubbleClass =
+                sender === 'user' ? 'user-bubble' : 'jarvis-bubble';
+
+            const senderName =
+                sender === 'user' ? 'You' : 'JARVIS';
+
+                messageDiv.innerHTML = `
+        <div class="${bubbleClass}">
+            <div style="font-weight:bold;margin-bottom:5px;">
+                ${senderName}
             </div>
 
-            <div class="input-container">
-                <input type="text" id="command-input" placeholder="Give me a command..." autocomplete="off">
-                <button id="send-button">Send</button>
-                <button id="speak" onclick="startListening()">Speak</button>
-            </div>
-
-
-
-            <div class="response-area" id="response-area">
-                <p class="response-text" id="response-text">Initializing Jarvis...</p>
+            <div class="message-content">
+                ${marked.parse(text)}
             </div>
         </div>
-        <p></p>
-        <div class="container">
+    `;
 
-            <h6>
-                &#9888; Use jarvis locally for better experiance
-            </h6>
-        </div>
-        <script>
-            function startListening() {
-                const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-                recognition.lang = 'en-US'; // ভাষা ঠিক করো, চাইলে 'bn-BD' ও দিতে পারো বাংলার জন্য
-                recognition.interimResults = false;
-                recognition.maxAlternatives = 1;
+                chatContainer.appendChild(messageDiv);
 
-                recognition.start();
+                // Syntax Highlight
+                messageDiv.querySelectorAll('pre code').forEach((el) => {
+                    hljs.highlightElement(el);
+                });
 
-                recognition.onresult = function (event) {
-                    const speechToText = event.results[0][0].transcript;
-                    document.getElementById('transcript').innerText = speechToText;
+                // LaTeX Render
+                if (window.MathJax) {
+                    MathJax.typesetPromise([messageDiv]).catch((err) => {
+                        console.error(err);
+                    });
+                }
 
-                    // এখন এই speech text server-এ পাঠাতে পারো:
-                    fetch('/api/command', {
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }
+
+            // Function to show typing indicator
+            function showTyping() {
+                const typingDiv = document.createElement('div');
+                typingDiv.id = 'typing-indicator';
+                typingDiv.className = 'message jarvis-message';
+                typingDiv.innerHTML = '<div class="typing-bubble">Jarvis is thinking...</div>';
+                chatContainer.appendChild(typingDiv);
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }
+
+            // Function to hide typing indicator
+            function hideTyping() {
+                const typingIndicator = document.getElementById('typing-indicator');
+                if (typingIndicator) {
+                    typingIndicator.remove();
+                }
+            }
+
+            // Function to send command to backend
+            async function sendCommand(command) {
+                if (!command) return;
+
+                // Add user message
+                addMessage('user', command);
+
+                // Show typing indicator
+                showTyping();
+
+                try {
+                    const response = await fetch('/api/command', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
                         },
-                        body: JSON.stringify({ command: speechToText })
-                    })
-                        .then(response => response.json())
-                        .then(data => {
-                            console.log('Server Response:', data);
-                            alert(data.text);  // বা সুন্দর করে ওয়েবপেজে দেখাতে পারো
-                        })
-                        .catch((error) => {
-                            console.error('Error:', error);
-                        });
-                };
+                        body: JSON.stringify({ command: command })
+                    });
 
-                recognition.onerror = function (event) {
-                    console.error('Error occurred in recognition:', event.error);
-                };
-            }
-        </script>
+                    const data = await response.json();
 
+                    // Hide typing indicator
+                    hideTyping();
 
-        <footer>
-            &copy; 2025 Jarvis Voice Assistant
-        </footer>
-
-        <!-- Previous HTML remains the same until the script section -->
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                const commandInput = document.getElementById('command-input');
-                const sendButton = document.getElementById('send-button');
-                const responseText = document.getElementById('response-text');
-                const featureButtons = document.querySelectorAll('.feature-btn');
-
-                // Initialize speech synthesis
-                const synth = window.speechSynthesis;
-
-                // Function to speak text
-                function speak(text) {
-                    if (synth.speaking) {
-                        synth.cancel();
+                    if (data.error) {
+                        addMessage('jarvis', data.text);
+                        return;
                     }
 
-                    const utterance = new SpeechSynthesisUtterance(text);
-                    utterance.voice = synth.getVoices().find(voice => voice.name.includes('Microsoft Zira'));
-                    utterance.rate = 1.1;
-                    utterance.pitch = 1;
-                    utterance.volume = 0.9;
-                    synth.speak(utterance);
-                }
-
-                // Function to simulate typing effect
-                function typeResponse(text, callback) {
-                    responseText.innerHTML = '';
-                    let i = 0;
-                    const typingInterval = setInterval(() => {
-                        if (i < text.length) {
-                            responseText.innerHTML += text.charAt(i);
-                            i++;
-                            // Scroll to bottom of response area
-                            const responseArea = document.getElementById('response-area');
-                            responseArea.scrollTop = responseArea.scrollHeight;
-                        } else {
-                            clearInterval(typingInterval);
-                            if (callback) callback();
-                        }
-                    }, 20);
-                }
-
-                // Function to send command to backend
-                async function sendCommand(command) {
-                    // Show typing indicator
-                    responseText.innerHTML = '<span class="typing">Jarvis is thinking...</span>';
-
-                    try {
-                        const response = await fetch('/api/command', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify({ command: command })
-                        });
-
-                        const data = await response.json();
-
-                        if (data.error) {
-                            typeResponse(data.text);
-                            speak("Sorry, I encountered an error.");
-                            return;
-                        }
-
-                        typeResponse(data.text, () => {
-                            speak(data.text);
-                        });
-
-                        // Handle special actions
-                        if (data.action) {
-                            switch (data.action.type) {
-                                case 'open_website':
-                                    window.open(data.action.url, '_blank');
-                                    break;
-                                case 'open_youtube':
+                    // Add Jarvis response
+                    addMessage('jarvis', data.text)
+                    if (data.action) {
+    switch (data.action.type) {
+        case 'open_website':
+            window.open(data.action.url, '_blank');
+            break
+            case 'open_youtube':
                                     window.open(`https://www.youtube.com/results?search_query=${encodeURIComponent(data.action.query)}`, '_blank');
                                     break;
                                 case 'search_web':
                                     window.open(`https://www.google.com/search?q=${encodeURIComponent(data.action.query)}`, '_blank');
                                     break;
-                            }
-                        }
-                    } catch (error) {
-                        const errorMsg = "Sorry, I couldn't connect to the server.";
-                        typeResponse(errorMsg);
-                        speak(errorMsg);
-                        console.error('Error:', error);
-                    }
-                }
+    }
+}
 
-                // Initialize greeting
-                async function initializeGreeting() {
-                    try {
-                        const response = await fetch('/api/init');
-                        const data = await response.json();
-                        typeResponse(data.text, () => {
-                            speak(data.text);
-                        });
-                    } catch (error) {
-                        const greeting = "";
-                        typeResponse(greeting);
-                        speak(greeting);
-                    }
+                } catch (error) {
+                    hideTyping();
+                    addMessage('jarvis', "Sorry, an error occurred while processing your request.");
+                    console.error(error);
                 }
+            }
 
-                // Event listeners
-                sendButton.addEventListener('click', () => {
+            // Initialize greeting
+            async function initializeGreeting() {
+                try {
+                    const response = await fetch('/api/init');
+                    const data = await response.json();
+                    setTimeout(() => {
+                        addMessage('jarvis', data.text);
+                    }, 1000);
+                } catch (error) {
+                    addMessage('jarvis', "Hello! I'm Jarvis, your personal assistant.");
+                }
+            }
+
+            // Event listeners
+            sendButton.addEventListener('click', () => {
+                const command = commandInput.value.trim();
+                if (command) {
+                    sendCommand(command);
+                    commandInput.value = '';
+                }
+            });
+
+            commandInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
                     const command = commandInput.value.trim();
                     if (command) {
-                        sendCommand(command.toLowerCase());
+                        sendCommand(command);
                         commandInput.value = '';
                     }
-                });
-
-                commandInput.addEventListener('keypress', (e) => {
-                    if (e.key === 'Enter') {
-                        const command = commandInput.value.trim();
-                        if (command) {
-                            sendCommand(command.toLowerCase());
-                            commandInput.value = '';
-                        }
-                    }
-                });
-
-                // Feature buttons
-                featureButtons.forEach(button => {
-                    button.addEventListener('click', () => {
-                        const command = button.getAttribute('data-command');
-                        commandInput.value = command;
-                        sendCommand(command.toLowerCase());
-                    });
-                });
-
-                // Initialize the assistant
-                initializeGreeting();
+                }
             });
-        </script>
-    </body>
 
-</html>
+            // Initialize MathJax
+            if (window.MathJax) {
+                MathJax.typesetPromise().catch(function (err) {
+                    console.log('MathJax initial typeset error:', err);
+                });
+            }
 
-
+            // Initialize the assistant
+            initializeGreeting();
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </body>
 
 </html>
